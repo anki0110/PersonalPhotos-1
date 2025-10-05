@@ -41,6 +41,7 @@ void RegisterServices(WebApplicationBuilder appBuilder)
     appBuilder.Services.AddScoped<ILogins, SqlServerLogins>();
     appBuilder.Services.AddScoped<IPhotoMetaData, SqlPhotoMetaData>();
     appBuilder.Services.AddScoped<IFileStorage, LocalFileStorage>();
+    appBuilder.Services.AddScoped<IFileOperations, LocalFileOperations>();
     appBuilder.Services.AddScoped<LoginAttribute>();
 }
 
