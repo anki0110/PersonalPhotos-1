@@ -4,7 +4,7 @@ using PersonalPhotos.Models;
 
 namespace PersonalPhotos.Controllers;
 
-public class LoginsController(ILogins loginService)
+public class LoginsController(ILogins loginService, IHttpContextAccessor httpContextAccessor)
     : Controller
 {
     public IActionResult Index(string? returnUrl)
