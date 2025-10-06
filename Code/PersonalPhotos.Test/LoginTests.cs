@@ -1,5 +1,6 @@
 using Core.Interfaces;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Newtonsoft.Json.Linq;
 using PersonalPhotos.Controllers;
@@ -27,6 +28,9 @@ namespace PersonalPhotos.Test
             _loginsController.ModelState.AddModelError("Test", "Test");
             var model = Mock.Of<LoginViewModel>();
             var result = await _loginsController.Login(model, CancellationToken.None);
+            Assert.IsType<ViewResult>(result);
+            var viewResult = result as ViewResult;
+            Assert.Equal("Login", viewResult?.ViewName,true);
         }
     }
 }
