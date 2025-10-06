@@ -32,5 +32,32 @@ namespace PersonalPhotos.Test
             var viewResult = result as ViewResult;
             Assert.Equal("Login", viewResult?.ViewName,true);
         }
+
+        [Fact]
+        public async Task Login_GivenValidModel_ReditectToDisplay()
+        {
+            const string email = "test@abc.com";
+            const string password = "Password1";
+
+            var loginViewModel = Mock.Of<LoginViewModel>(l => l.Email == email && l.Password == password);
+
+            // or 
+            /*var model = new LoginViewModel
+            {
+                Email = "testuser@example.com",
+                Password = "TestPassword123!",
+                ReturnUrl = "/photos/display"
+            };*/
+            _logins.Setup(l => l.Login(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(UserLoginResult.Success);
+             
+            var result = await _loginsController.Login(loginViewModel, CancellationToken.None); // invoke the Actual method 
+            Assert.IsType<RedirectToActionResult>(result); // check if result is of type RedirectToActionResult
+            var redirectToActionResult = result as RedirectToActionResult;
+
+            Assert.Equal("Display", redirectToActionResult?.ActionName, true); // verify name of action method to be redirected to
+            Assert.Equal("Photos", redirectToActionResult?.ControllerName, true); // verify name of controller to be redirected to
+
+        }
     }
 }
